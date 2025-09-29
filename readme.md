@@ -1,4 +1,4 @@
-## Course Certificate Generator
+## Roles-Based Course Certificate Generator
 
 This WordPress plugin automates the generation and emailing of course completion certificates. It's designed for courses managed as custom post types (specifically "training") and leverages Advanced Custom Fields (ACF) for customizable certificate designs and course settings.
 
@@ -9,6 +9,7 @@ This WordPress plugin automates the generation and emailing of course completion
 - **Customizable Certificates:** Uses ACF fields to define certificate design elements like background images and text positions.
 - **Attendee Management:** Allows uploading attendee lists via CSV files.
 - **WordPress Admin Interface:** Provides a user-friendly admin page to manage certificate generation and attendee uploads.
+- **Customization for TTC Network Roles** Uses permissions and credentials to allow plugin access.
 
 **Ideal for:**
 
