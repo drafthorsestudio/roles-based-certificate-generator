@@ -1,0 +1,37 @@
+Change Log
+=============================
+v1.0.0
+- Initial Release
+
+v1.0.5
+- Fix: add apostrophe formatting in course title
+
+v1.0.7
+- Fix: rename and update field name reference to background image in ACF field group
+- Fix: add debugging during email sending 
+
+v1.0.8
+- New: individual attendee selection for certificate generation
+
+v1.0.9
+- New: add additional ACF fields added to "Training Fields", including: training credentials, training ches, attendee hours (repeater), certificate credentials position, certificate ches position, and certificate hours position.
+- New: add sample.csv file to plugin directory for download.
+- Fix: email message body to user updated.
+- Fix: when certificate background image was not set, email send process would fail.
+
+v1.0.10
+- Fix: move training_credentials to attendee_credentials, training_ches to attendee_ches to attendees repeater field. Update sample.csv to reflect these changes.
+
+v1.0.11
+- Fix: The hour on the certificate is showing a 0 even if the field is empty or null. Hours appear with a prefix CE Hours. So it would appear on the certificate with CE Hours: XX. 
+- Fix: Prefix on the CHES # would appear on the certificate with CHES #: xxxxxx.
+
+v1.1
+- Fix: minor formatting with attendee_ches if empty.
+
+v1.2
+- New: add field for misc text to be displayed on certificate.
+- Fix: Find and delete any existing certificate files for this person to avoid duplicates.
+
+v1.21
+- Fix: add course id to pdf filename to avoid duplicate files.
