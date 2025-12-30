@@ -35,3 +35,117 @@ v1.2
 
 v1.21
 - Fix: add course id to pdf filename to avoid duplicate files.
+
+v1.3 custom for ATTC
+- Fix: Improved memory management with garbage collection and usage monitoring
+- Fix: Added cache/lock mechanism to prevent duplicate certificate generation
+- Fix: Enhanced error logging for better debugging of email delivery issues
+- Fix: Resolved PHP warnings for undefined variables in geolocation functions
+- Improvement: Better handling of ACF image field formats (URL vs array)
+- Improvement: More reliable AJAX processing using transients instead of cache
+- Improvement: Added detailed logging for certificate processing progress
+- Performance: Optimized PDF generation with proper cleanup and memory management
+
+v1.4
+- CRITICAL FIX: Resolved batch processing stopping prematurely - certificates now send to all attendees even when individual emails fail
+- New: Added email format validation (RFC 5322 compliance check) before sending
+- New: Added domain DNS validation (MX and A record checks) to catch non-existent domains
+- New: Failed/invalid emails are now tracked and reported in completion summary
+- New: Admin interface displays detailed failure report showing which emails failed and why
+- New: Added Post SMTP integration notice in admin interface
+- New: Enhanced SMTP error detection and logging
+- New: Capture PHP errors during wp_mail execution
+- Fix: Extended PHP execution time limit to 5 minutes per AJAX request (prevents timeout on large batches)
+- Fix: Increased PHP memory limit to 256M minimum with monitoring
+- Fix: Improved lock mechanism with timestamp-based validation and automatic stale lock cleanup
+- Fix: Lock expiration extended to 10 minutes for large batch processing
+- Fix: Added AJAX timeout handling (60 seconds per request) with user-friendly error messages
+- Fix: PDF files now deleted immediately after email sending to free memory
+- Fix: Force garbage collection after each certificate generation
+- Fix: Memory usage monitoring - aborts with clear error if approaching limits
+- Fix: Enhanced error logging with detailed progress tracking (shows X of Y processed)
+- Fix: Batch continues processing even when individual emails fail validation or delivery
+- Improvement: Success/failure counts displayed in real-time during batch processing
+- Improvement: Completion message shows total succeeded vs failed with detailed breakdown
+- Improvement: JavaScript now displays running count of failed emails during processing
+- Improvement: Better handling of stale locks from previously failed processes
+- Performance: Optimized memory management to handle 130+ attendee batches
+- Performance: Better cleanup of FPDF objects between iterations
+
+Known Limitations:
+- Cannot detect non-existent mailboxes on valid domains (e.g., fake@gmail.com) - these require Post SMTP logs to verify actual delivery
+- Pre-validation catches invalid format and non-existent domains only
+- Actual bounce detection requires checking Post SMTP Email Log after batch completion
+
+v1.5
+- New: Certificate status tracking system integrated with ACF repeater fields
+- New: 13 detailed status codes for tracking certificate delivery (pending, sent, invalid_format, domain_not_exist, send_failed, smtp_error, smtp_auth_failed, recipient_rejected, mailbox_full, spam_rejected, rate_limited, attachment_too_large, temporary_failure)
+- New: Real-time results table in admin interface showing certificate status for each attendee
+- New: Status badges with visual indicators (✅/⚠️/❌) for quick identification of delivery status
+- New: CSV export functionality for batch results with timestamped filenames
+- New: Automatic SMTP error code detection and classification (550, 552, 554, 421)
+- New: Status filter dropdown to view attendees by certificate status (All, Pending, Sent, Failed, + 11 specific error types)
+- New: Attendee summary statistics showing total, sent, pending, and failed counts
+- New: Status badges in attendee dropdown for easy identification
+- New: Targeted resending - filter by status and resend to specific groups (e.g., all failed, all invalid emails)
+- Fix: Certificate status now persists in ACF field 'certificate_status' after each send attempt
+- Fix: Error details captured and stored in 'certificate_status_details' field
+- Improvement: Admin interface shows status history for each attendee
+- Improvement: Color-coded table rows (green/yellow/red) for visual status identification
+- Improvement: Auto-scrolling results table during batch processing
+- Improvement: Results table displays during processing, not just after completion
+- Improvement: Can resend certificates to individuals with name typos after fixing attendee data
+- Improvement: Progressive filtering allows iterative fixing and resending of failed batches
+- Performance: Status updates happen in real-time during batch processing
+
+ACF Field Requirements for v1.5:
+- certificate_status (select field) - Required for status tracking
+- certificate_status_details (text field) - Optional for error details
+- See ACF_CERTIFICATE_STATUS_SETUP.md for complete field configuration
+
+Workflow Enhancement:
+- Users can now filter by failure type, fix issues, and resend only to affected attendees
+- Status tracking enables progressive batch cleanup (fix invalid emails, retry temp failures, etc.)
+- Integration with Post SMTP provides two-layer validation (plugin validation + actual delivery confirmation)
+
+v1.6
+- NEW: Admin Settings page accessible via Certificate Generator → Settings (administrator-only access)
+- NEW: Visual interface for managing role-to-group mappings without code editing
+- NEW: Configurable taxonomy selection for filtering trainings (defaults to 'group')
+- NEW: Toggle to enable/disable group-based filtering
+- NEW: Add/remove role mappings dynamically through admin UI with validation
+- NEW: Auto-detection of PublishPress roles/groups for mapping configuration
+- NEW: Auto-detection of available taxonomy terms for dropdown selection
+- NEW: Settings persist in wp_options database across plugin updates
+- IMPROVEMENT: Removed hardcoded $role_group_mapping array - now database-driven
+- IMPROVEMENT: Removed hardcoded 'group' taxonomy reference - now configurable
+- IMPROVEMENT: Settings page includes helpful descriptions and usage notes
+- IMPROVEMENT: Validation prevents invalid role/group combinations
+- IMPROVEMENT: Nonce security and capability checks for settings access
+- FIX: Unique ID generation bug in settings form - role and group now properly paired
+- FIX: Falls back to WordPress roles if PublishPress unavailable
+- CHANGE: One-time setup required after upgrade - configure role mappings in Settings page
+- CHANGE: Access settings via: Certificate Generator → Settings (manage_options capability required)
+- Security: Settings page restricted to administrators only
+- Security: Form submission protected with WordPress nonce verification
+- Performance: Settings cached in wp_options for fast retrieval
+
+Migration Required for v1.6:
+- After upgrading from v1.5, administrators must configure settings via Settings page
+- Previous hardcoded role mappings must be recreated through admin interface
+- Select taxonomy for filtering (typically 'group')
+- Configure role-to-group mappings using visual interface
+- See v1.6_SETTINGS_MIGRATION_GUIDE.md for detailed migration instructions
+
+Settings Storage:
+- Option name: certificate_generator_settings
+- Structure: role_group_mappings, taxonomy_for_filtering, enable_network_filtering
+- All settings stored in wp_options table for persistence
+
+Benefits of v1.6:
+- No more code editing for configuration changes
+- Settings survive plugin updates
+- Easy to add/remove regional centers or roles
+- Non-technical administrators can manage mappings
+- Visual feedback prevents configuration errors
+- Can disable filtering entirely for testing or single-organization setups
